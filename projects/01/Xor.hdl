@@ -3,15 +3,20 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/Xor.hdl
 
+// Cost: 8 Nand
+
 /**
  * Exclusive-or gate:
  * out = not (a == b)
  */
 
 CHIP Xor {
-    IN a, b;
-    OUT out;
+	IN a, b;
+	OUT out;
 
-    PARTS:
-    // Put your code here:
+	PARTS:
+	Or (a = a, b = b, out = aOrB);
+	And (a = a, b = b, out = aAndB);
+	Not (in = aAndB, out = notAAndB);
+	And (a = aOrB, b = notAAndB, out = out);
 }

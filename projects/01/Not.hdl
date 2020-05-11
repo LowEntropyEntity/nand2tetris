@@ -3,15 +3,17 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/Not.hdl
 
+// Cost: 1 Nand
+
 /**
  * Not gate:
  * out = not in
  */
 
 CHIP Not {
-    IN in;
-    OUT out;
+	IN in;
+	OUT out;
 
-    PARTS:
-    // Put your code here:
+	PARTS:
+	Nand (a = in, b = in, out = out);
 }

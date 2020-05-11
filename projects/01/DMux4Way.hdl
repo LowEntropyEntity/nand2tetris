@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/DMux4Way.hdl
 
+// Cost: 14 Nand
+
 /**
  * 4-way demultiplexor:
  * {a, b, c, d} = {in, 0, 0, 0} if sel == 00
@@ -12,9 +14,14 @@
  */
 
 CHIP DMux4Way {
-    IN in, sel[2];
-    OUT a, b, c, d;
+	IN in, sel[2];
+	OUT a, b, c, d;
 
-    PARTS:
-    // Put your code here:
+	PARTS:
+	DMux (in = in, sel = sel[0], a = aOrC, b = bOrD);
+	Not (in = sel[1], out = notSel1);
+	And (a = notSel1, b = aOrC, out = a);
+	And (a = sel[1], b = aOrC, out = c);
+	And (a = notSel1, b = bOrD, out = b);
+	And (a = sel[1], b = bOrD, out = d);
 }

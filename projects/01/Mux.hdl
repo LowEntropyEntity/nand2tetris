@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/Mux.hdl
 
+// Cost: 8 Nand
+
 /** 
  * Multiplexor:
  * out = a if sel == 0
@@ -10,9 +12,12 @@
  */
 
 CHIP Mux {
-    IN a, b, sel;
-    OUT out;
+	IN a, b, sel;
+	OUT out;
 
-    PARTS:
-    // Put your code here:
+	PARTS:
+	Not (in = sel, out = notSel);
+	And (a = a, b = notSel, out = aAndNotSel);
+	And (a = b, b = sel, out = bAndSel);
+	Or (a = aAndNotSel, b = bAndSel, out = out);
 }

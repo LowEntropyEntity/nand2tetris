@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/And.hdl
 
+// Cost: 2 Nand
+
 /**
  * And gate: 
  * out = 1 if (a == 1 and b == 1)
@@ -10,9 +12,10 @@
  */
 
 CHIP And {
-    IN a, b;
-    OUT out;
+	IN a, b;
+	OUT out;
 
-    PARTS:
-    // Put your code here:
+	PARTS:
+	Nand (a = a, b = b, out = nandResult);
+	Not (in = nandResult, out = out);
 }

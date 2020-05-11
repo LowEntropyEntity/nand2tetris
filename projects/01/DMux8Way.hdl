@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/01/DMux8Way.hdl
 
+// Cost: 31 Nand
+
 /**
  * 8-way demultiplexor:
  * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
@@ -12,9 +14,18 @@
  */
 
 CHIP DMux8Way {
-    IN in, sel[3];
-    OUT a, b, c, d, e, f, g, h;
+	IN in, sel[3];
+	OUT a, b, c, d, e, f, g, h;
 
-    PARTS:
-    // Put your code here:
+	PARTS:
+	DMux4Way (in = in, sel = sel[0..1], a = aOrE, b = bOrF, c = cOrG, d = dOrH);
+	Not (in = sel[2], out = notSel2);
+	And (a = notSel2, b = aOrE, out = a);
+	And (a = notSel2, b = bOrF, out = b);
+	And (a = notSel2, b = cOrG, out = c);
+	And (a = notSel2, b = dOrH, out = d);
+	And (a = sel[2], b = aOrE, out = e);
+	And (a = sel[2], b = bOrF, out = f);
+	And (a = sel[2], b = cOrG, out = g);
+	And (a = sel[2], b = dOrH, out = h);
 }

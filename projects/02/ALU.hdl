@@ -3,6 +3,8 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/02/ALU.hdl
 
+// Cost: 1242 Nand
+
 /**
  * The ALU (Arithmetic Logic Unit).
  * Computes one of the following functions:
@@ -27,20 +29,34 @@
 // if (out < 0) set ng = 1
 
 CHIP ALU {
-    IN  
-        x[16], y[16],  // 16-bit inputs        
-        zx, // zero the x input?
-        nx, // negate the x input?
-        zy, // zero the y input?
-        ny, // negate the y input?
-        f,  // compute out = x + y (if 1) or x & y (if 0)
-        no; // negate the out output?
+	IN  
+	x[16], y[16],  // 16-bit inputs        
+	zx, // zero the x input?
+	nx, // negate the x input?
+	zy, // zero the y input?
+	ny, // negate the y input?
+	f,  // compute out = x + y (if 1) or x & y (if 0)
+	no; // negate the out output?
 
-    OUT 
-        out[16], // 16-bit output
-        zr, // 1 if (out == 0), 0 otherwise
-        ng; // 1 if (out < 0),  0 otherwise
+	OUT 
+		out[16], // 16-bit output
+		zr, // 1 if (out == 0), 0 otherwise
+		ng; // 1 if (out < 0),  0 otherwise
 
-    PARTS:
-   // Put you code here:
+	PARTS:
+	Mux16 (a = x, b = false, sel = zx, out = x1);
+	Mux16 (a = y, b = false, sel = zy, out = y1);
+	Not16 (in = x1, out = notX1);
+	Not16 (in = y1, out = notY1);
+	Mux16 (a = x1, b = notX1, sel = nx, out = x2);
+	Mux16 (a = y1, b = notY1, sel = ny, out = y2);
+	Add16 (a = x2, b = y2, out = addXY);
+	And16 (a = x2, b = y2, out = andXY);
+	Mux16 (a = andXY, b = addXY, sel = f, out = fXY);
+	Not16 (in = fXY, out = notFxy);
+	Mux16 (a = fXY, b = notFxy, sel = no, out = out, out[0..7] = out0to7, out[8..15] = out8to15, out[15] = ng);
+	Or8Way (in = out0to7, out = outOr07);
+	Or8Way (in = out8to15, out = outOr815);
+	Or (a = outOr07, b = outOr815, out = notZr);
+	Not (in = notZr, out = zr);
 }

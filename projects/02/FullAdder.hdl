@@ -3,15 +3,27 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/02/FullAdder.hdl
 
+// Cost: 23 Nand
+
 /**
  * Computes the sum of three bits.
  */
 
 CHIP FullAdder {
-    IN a, b, c;  // 1-bit inputs
-    OUT sum,     // Right bit of a + b + c
-        carry;   // Left bit of a + b + c
+	IN a, b, c;  // 1-bit inputs
+	OUT sum,     // Right bit of a + b + c
+	    carry;   // Left bit of a + b + c
 
-    PARTS:
-    // Put you code here:
+	PARTS:
+	HalfAdder (a = a, b = b, sum = abSum, carry = abCarry);
+	HalfAdder (a = abSum, b = c, sum = sum, carry = abcCarry);
+	Or (a = abCarry, b = abcCarry, out = carry);
+
+/* alternate solution - same number of operations, easier for
+   me to conceptualize, but more instructions
+	HalfAdder (a = a, b = b, sum = abSum, carry = abCarry);
+	Xor (a = abSum, b = c, out = sum);
+	And (a = abSum, b = c, out = abSumAndC);
+	Or (a = abSumAndC, b = abCarry, out = carry);
+*/
 }

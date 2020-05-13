@@ -20,7 +20,7 @@ CHIP Mux8Way16 {
 	OUT out[16];
 
 	PARTS:
-	Mux4Way16 (a = a, b = b, c = c, d = d, sel = sel[0..1], out = muxLo);
-	Mux4Way16 (a = e, b = f, c = g, d = h, sel = sel[0..1], out = muxHi);
-	Mux16 (a = muxLo, b = muxHi, sel = sel[2], out = out);
+	Mux4Way16 (a = a, b = b, c = c, d = d, sel = sel[0..1], out = muxLow);
+	Mux4Way16 (a = e, b = f, c = g, d = h, sel = sel[0..1], out = muxHigh);
+	Mux16 (a = muxLow, b = muxHigh, sel = sel[2], out = out);
 }
